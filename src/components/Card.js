@@ -1,8 +1,8 @@
 function Card({card, image, name, likesCount, onCardClick}){
     return(
         <li className="element">
-          <button type="button" className="button element__delete-button"></button>
-          <img src={image} alt="#" className="element__image" onClick={() => onCardClick(card)}/>
+          <button type="button" className="button element__delete-button"/>
+          <img src={image} alt={name} className="element__image" onClick={() => onCardClick(card)}/>
           <div className="element__content">
             <h2 className="element__name">{name}</h2>
             <div className="element__like">
