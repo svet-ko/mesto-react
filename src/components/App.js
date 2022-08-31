@@ -88,7 +88,7 @@ function App() {
           formType="place"
           formName="place"
           ariaLabel="Создать новое место"
-          buttonTextContent="Создать"
+          buttonText="Создать"
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
         >
@@ -125,7 +125,7 @@ function App() {
           formType="remove-confirm"
           formName="remove"
           ariaLabel="Согласие"
-          buttonTextContent="Да"
+          buttonText="Да"
         ></PopupWithForm>
 
         <PopupWithForm
@@ -134,7 +134,7 @@ function App() {
           formType="edit"
           formName="edit"
           ariaLabel="Сохранить изменения"
-          buttonTextContent="Сохранить"
+          buttonText="Сохранить"
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
         >
