@@ -15,6 +15,7 @@ function App() {
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
   const [currentUser, setcurrentUser] = React.useState({});
+  const [cards, setCards] = React.useState([]);
 
   React.useEffect(() => {
     api.getUserInfo()
@@ -50,12 +51,50 @@ function App() {
     setIsImagePopupOpen(true);
   }
 
+  function fetchCardsInfo() {
+      api.getInitialCards()
+      .then((initialCards) => {
+          setCards(initialCards);
+      })
+      .catch((err) => {
+          console.warn(err);
+        })
+  }
+
+  React.useEffect(() => {
+      fetchCardsInfo();
+  }, []); 
+
+  function handleCardLike(card) {
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    
+    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+    });
+  }
+
+  function handleCardDelete(card) {
+    api.deleteCard(card._id).then(
+      setCards((state) => state.filter((c) => {
+        return c._id !== card._id
+      }))
+    )
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="content">
           <Header />
-          <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}/>
+          <Main
+            onEditProfile={handleEditProfileClick}
+            onAddPlace={handleAddPlaceClick}
+            onEditAvatar={handleEditAvatarClick}
+            cards={cards}
+            onCardClick={handleCardClick}
+            onLikeClick={handleCardLike}
+            onTrashClick={handleCardDelete}
+          />
           <Footer />
 
           <PopupWithForm 

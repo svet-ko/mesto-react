@@ -1,26 +1,9 @@
 import React from 'react';
-import {api} from '../utils/Api';
 import Card from './Card';
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
 
 function Main(props) {
   const currentUserInfoContext = React.useContext(CurrentUserContext);
-
-  const [cards, setCards] = React.useState([]);
-
-  function fetchCardsInfo() {
-      api.getInitialCards()
-      .then((initialCards) => {
-          setCards(initialCards);
-      })
-      .catch((err) => {
-          console.warn(err);
-        })
-  }
-
-  React.useEffect(() => {
-      fetchCardsInfo();
-  }, []);
 
   return(
     <main className="main">
@@ -43,7 +26,7 @@ function Main(props) {
       <section className="elements" aria-label="Список картинок пользователя">
         <ul className="list elements__list">
           {
-              cards.map((card) => (
+              props.cards.map((card) => (
                 <Card
                   key={card._id}
                   card={card}
@@ -51,7 +34,9 @@ function Main(props) {
                   name={card.name}
                   likesCount={card.likes.length}
                   onCardClick={props.onCardClick}
-                  />
+                  onLikeClick={props.onLikeClick}
+                  onTrashClick={props.onTrashClick}
+                />
               ))
           }
         </ul>
