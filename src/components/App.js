@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'
 import Header from './Header';
 import Footer from './Footer';
 import Main from './Main';
@@ -12,15 +12,15 @@ import AddPlacePopup from './AddPlacePopup';
 
 function App() {
 
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
-  const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState({});
-  const [currentUser, setcurrentUser] = React.useState({});
-  const [cards, setCards] = React.useState([]);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState({});
+  const [currentUser, setcurrentUser] = useState({});
+  const [cards, setCards] = useState([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     api.getUserInfo()
     .then((res) => {
       setcurrentUser(res);
@@ -64,7 +64,7 @@ function handleEditProfileClick() {
         })
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
       fetchCardsInfo();
   }, []); 
 
@@ -125,17 +125,6 @@ function handleEditProfileClick() {
     })
   }
 
-  function checkInputValidity(e, isInputValid, setValidity, setValidityMessage, setFormValidity) {
-    setValidity(e.target.validity.valid);
-    if (isInputValid) {
-      setValidityMessage('');
-      setFormValidity(true);
-    } else {
-      setValidityMessage(e.target.validationMessage);
-      setFormValidity(false);
-    }
-  }
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
@@ -156,14 +145,12 @@ function handleEditProfileClick() {
             isOpen={isEditProfilePopupOpen}
             onClose={closeAllPopups}
             onUpdateUser={handleUpdateUser}
-            checkInputValidity={checkInputValidity}
           /> 
 
           <AddPlacePopup
             isOpen={isAddPlacePopupOpen}
             onClose={closeAllPopups}
             onAddPlace={handleAddPlace}
-            checkInputValidity={checkInputValidity}
           />
           
           <PopupWithForm
@@ -179,7 +166,6 @@ function handleEditProfileClick() {
             isOpen={isEditAvatarPopupOpen}
             onClose={closeAllPopups}
             onUpdateAvatar={handleAvatarUpdate}
-            checkInputValidity={checkInputValidity}
           /> 
 
           <ImagePopup isOpen={isImagePopupOpen} selectedCard={selectedCard} onClose={closeAllPopups}/>

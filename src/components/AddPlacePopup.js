@@ -1,33 +1,40 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'
 import PopupWithForm from './PopupWithForm';
+import { checkInputValidity } from '../utils/utils';
 
 function AddPlacePopup({
   isOpen,
   onClose,
-  onAddPlace,
-  checkInputValidity
+  onAddPlace
 }){
 
-  const [name, setName] = React.useState('');
-  const [link, setLink] = React.useState('');
+  const [name, setName] = useState('');
+  const [link, setLink] = useState('');
 
-  const [isNameInputValid, setIsNameInputValid] = React.useState(false);
-  const [nameChangeValidationMessage, setNameChangeValidationMessage] = React.useState('');
+  const [isNameInputValid, setIsNameInputValid] = useState(false);
+  const [nameChangeValidationMessage, setNameChangeValidationMessage] = useState('');
 
-  const [isLinkInputValid, setIsLinkInputValid] = React.useState(false);
-  const [linkChangeValidationMessage, setLinkChangeValidationMessage] = React.useState('');
+  const [isLinkInputValid, setIsLinkInputValid] = useState(false);
+  const [linkChangeValidationMessage, setLinkChangeValidationMessage] = useState('');
 
-  const [isFormValid, setIsFormValid] = React.useState(false);
+  const isFormValid = isLinkInputValid && isNameInputValid;
 
   function onNameChange(e) {
     setName(e.target.value);
-    checkInputValidity(e, isNameInputValid, setIsNameInputValid, setNameChangeValidationMessage, setIsFormValid);
+    checkInputValidity(e, isNameInputValid, setIsNameInputValid, setNameChangeValidationMessage);
   }
 
   function onLinkChange(e) {
     setLink(e.target.value);
-    checkInputValidity(e, isLinkInputValid, setIsLinkInputValid, setLinkChangeValidationMessage, setIsFormValid);
+    checkInputValidity(e, isLinkInputValid, setIsLinkInputValid, setLinkChangeValidationMessage);
   }
+
+  useEffect(() => {
+    if (isOpen) {
+      setName('');
+      setLink('');
+    }
+  }, [isOpen]); 
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -55,6 +62,7 @@ function AddPlacePopup({
           <input
             type="text"
             className="form__input form__input_type_place"
+            value={name || ''}
             onChange={onNameChange}
             id="place" name="place"
             placeholder="Название"
@@ -68,6 +76,7 @@ function AddPlacePopup({
           <input
             type="url"
             className="form__input form__input_type_url"
+            value={link || ''}
             onChange={onLinkChange}
             id="url"
             name="url"

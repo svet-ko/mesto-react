@@ -1,19 +1,19 @@
-import React, { useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PopupWithForm from './PopupWithForm';
+import { checkInputValidity } from '../utils/utils';
 
 function EditAvatarPopup({
   isOpen,
   onClose,
-  onUpdateAvatar,
-  checkInputValidity
+  onUpdateAvatar
 }){
   const avatar = useRef();
-  const [isInputValid, setIsInputValid] = React.useState(false);
-  const [avatarChangeValidationMessage, setAvatarChangeValidationMessage] = React.useState('');
-  const [isFormValid, setIsFormValid] = React.useState(false);
+  const [isInputValid, setIsInputValid] = useState(false);
+  const [avatarChangeValidationMessage, setAvatarChangeValidationMessage] = useState('');
+  const isFormValid = isInputValid;
 
   function onInputChange(e) {
-    checkInputValidity(e, isInputValid, setIsInputValid, setAvatarChangeValidationMessage, setIsFormValid);
+    checkInputValidity(e, isInputValid, setIsInputValid, setAvatarChangeValidationMessage);
   }
 
   function handleSubmit(e) {
@@ -23,11 +23,11 @@ function EditAvatarPopup({
     });
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!isOpen) {
       avatar.current.value = '';
       setAvatarChangeValidationMessage('');
-      setIsFormValid(false);
+      setIsInputValid(false);
     }
 }, [isOpen]);
 

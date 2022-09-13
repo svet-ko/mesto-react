@@ -1,27 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react'
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
 import PopupWithForm from './PopupWithForm';
+import { checkInputValidity } from '../utils/utils';
 
 function EditProfilePopup({
     isOpen,
     onClose,
-    onUpdateUser,
-    checkInputValidity
+    onUpdateUser
 }){
-  const [name, setName] = React.useState('');
-  const [description, setDescription] = React.useState('');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
 
-  const [isNameInputValid, setIsNameInputValid] = React.useState(false);
-  const [nameChangeValidationMessage, setNameChangeValidationMessage] = React.useState('');
+  const [isNameInputValid, setIsNameInputValid] = useState(true);
+  const [nameChangeValidationMessage, setNameChangeValidationMessage] = useState('');
 
-  const [isAboutInputValid, setIsAboutInputValid] = React.useState(false);
-  const [aboutChangeValidationMessage, setAboutChangeValidationMessage] = React.useState('');
+  const [isAboutInputValid, setIsAboutInputValid] = useState(true);
+  const [aboutChangeValidationMessage, setAboutChangeValidationMessage] = useState('');
 
-  const [isFormValid, setIsFormValid] = React.useState(false);
+  const isFormValid = isAboutInputValid && isNameInputValid;
 
   const currentUser = React.useContext(CurrentUserContext);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isOpen) {
       setName(currentUser.name);
       setDescription(currentUser.about);
@@ -30,12 +30,12 @@ function EditProfilePopup({
 
   function onNameChange(e) {
     setName(e.target.value);
-    checkInputValidity(e, isNameInputValid, setIsNameInputValid, setNameChangeValidationMessage, setIsFormValid);
+    checkInputValidity(e, isNameInputValid, setIsNameInputValid, setNameChangeValidationMessage);
   }
 
   function onDescriptionChange(e) {
     setDescription(e.target.value);
-    checkInputValidity(e, isAboutInputValid, setIsAboutInputValid, setAboutChangeValidationMessage, setIsFormValid);
+    checkInputValidity(e, isAboutInputValid, setIsAboutInputValid, setAboutChangeValidationMessage);
   }
 
   function handleSubmit(e) {
