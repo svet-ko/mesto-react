@@ -15,7 +15,7 @@ Mesto is a social network created to share photos with other users, as well as v
 ![HTML5](https://img.shields.io/badge/-HTML5-090909?style=for-the-badge&logo=HTML5)
 ![CSS3](https://img.shields.io/badge/-CSS3-090909?style=for-the-badge&logo=CSS3)
 
-## Инструкция по установке:
+## Installation instructions:
 1. Clone repo 
 `git clone https://github.com/svet-ko/mesto-react`
 2. Install Dependencies
